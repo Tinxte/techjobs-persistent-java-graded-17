@@ -2,6 +2,8 @@ package org.launchcode.techjobs.persistent.controllers;
 
 import jakarta.validation.Valid;
 import org.launchcode.techjobs.persistent.models.Job;
+import org.launchcode.techjobs.persistent.models.data.EmployerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -16,6 +18,11 @@ import java.util.Optional;
  */
 @Controller
 public class HomeController {
+
+    @Autowired
+    EmployerRepository employerRepository;
+
+    //TODO task 3.2 A user will select an employer when they create a job. Add employer data...
 
     @RequestMapping("/")
     public String index(Model model) {
