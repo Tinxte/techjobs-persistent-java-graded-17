@@ -43,7 +43,6 @@ public class HomeController {
         return "add";
     }
 
-    //TODO task 3.4 add code inside of this method to select the employer object that has been chosen to be affiliated with the new job
     @PostMapping("add")
     public String processAddJobForm(@ModelAttribute @Valid Job newJob,
                                        Errors errors, Model model, @RequestParam int employerId) {
