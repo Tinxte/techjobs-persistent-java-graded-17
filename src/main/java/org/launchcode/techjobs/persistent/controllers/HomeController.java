@@ -1,8 +1,10 @@
 package org.launchcode.techjobs.persistent.controllers;
 
 import jakarta.validation.Valid;
+import org.launchcode.techjobs.persistent.models.Employer;
 import org.launchcode.techjobs.persistent.models.Job;
 import org.launchcode.techjobs.persistent.models.data.EmployerRepository;
+import org.launchcode.techjobs.persistent.models.data.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,9 +22,10 @@ import java.util.Optional;
 public class HomeController {
 
     @Autowired
-    EmployerRepository employerRepository;
+    private EmployerRepository employerRepository;
 
-    //TODO task 3.2 A user will select an employer when they create a job. Add employer data...
+    @Autowired
+    private JobRepository jobRepository;
 
     @RequestMapping("/")
     public String index(Model model) {
@@ -36,9 +39,11 @@ public class HomeController {
     public String displayAddJobForm(Model model) {
 	model.addAttribute("title", "Add Job");
         model.addAttribute(new Job());
+        model.addAttribute("employers",employerRepository.findAll());
         return "add";
     }
 
+    //TODO task 3.4 add code inside of this method to select the employer object that has been chosen to be affiliated with the new job
     @PostMapping("add")
     public String processAddJobForm(@ModelAttribute @Valid Job newJob,
                                        Errors errors, Model model, @RequestParam int employerId) {
@@ -47,6 +52,17 @@ public class HomeController {
 	    model.addAttribute("title", "Add Job");
             return "add";
         }
+        Optional<Employer> result = employerRepository.findById(employerId);
+        newJob.setEmployer(result.get());
+
+//        model.addAttribute("employer", employerRepository)
+
+//        newJob.setEmployer(result);
+
+//            Optional<Employer> result = employerRepository.findById(employerId);
+//            model.addAttribute("job", newJob);
+
+        jobRepository.save(newJob);
 
         return "redirect:";
     }
